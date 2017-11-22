@@ -13,5 +13,7 @@ using namespace std;
 
 extern int traceEnabled;
 
+void printDescription(int x);
+
 
 #endif

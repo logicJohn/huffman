@@ -6,7 +6,7 @@ echo Test file executed.
 echo I am too lazy to write commands again and again
 pause
 
-g++ -g -w -o hello.exe trace.cpp
+g++ -g -w -o huffmanTest.exe huffman.cpp trace.cpp
 
 pause
 
@@ -14,7 +14,7 @@ echo  **************Compiling Complete****************
 
 pause
 
-hello.exe -t
+huffmanTest.exe -t test.txt file2.txt
 
 pause
 pause
