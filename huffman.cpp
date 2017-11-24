@@ -12,6 +12,7 @@
 #include <cctype>
 #include "trace.h"
 #include "tree.h"
+#include "pqueue.h"
 
 using namespace std;
 
@@ -19,9 +20,8 @@ bool freqCount(int* a, int length, const char* file);
 void setArray(int* a, int length);
 FILE* openInFile(const char* fileNmae);
 FILE* openOutFile(const char* fileName);
-void printArray(int* a, int length);
-void charDescription(unsigned char c);
-
+Tree buildHuffmanTree( int* freqArray, int length);
+void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 
 int traceEnabled = 0;
 
@@ -49,9 +49,10 @@ int main(int argc, char* argv[]){
         return 1;
     }
     printArray(freqArray, arrayLength);
-
-    printDescription(0);
-    
+    Tree huffmanTree;
+    huffmanTree = buildHuffmanTree(freqArray, arrayLength);
+    //printTree( huffmanTree );
+    printf("finished\n");
     delete[] freqArray;
     return 0;
 }   
@@ -108,23 +109,35 @@ FILE* openOutFile(const char* fileName){
     return outfile;
 }
 
-
-void printArray(int* a, int length){
-    int counter=0;
-    if (traceEnabled == 0){
-        return;
-    }
-    for (int i = 0; i < length; i++){
-        if (a[i] > 0){    
-            printf(" [%i] = %i ", i , a[i]);
-            counter++;
-            if (counter % 3 == 0){
-                
-                printf("\n");
-                counter = 0;
-            }
+Tree buildHuffmanTree(int* freqArray, int length){
+    PriorityQueue  q;
+    ItemType r, s;
+    PriorityType l;
+  
+    buildPriorityQueue(q, freqArray, length);
+    
+    while ( !isEmpty(q) ){
+        remove(q, r, l);
+        if( isEmpty(q) ){
+            Tree temp = r;
+            return temp;
         }
+        remove(q, s, l);
+        Tree t = new Node(r, s);
+        l = 0;
+        insert(q, t, l); 
     }
+
+}
+
+void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
+    Tree t;
+    for (int i = 0; i < length; i++){
+        if (freqArray[i] > 0){
+            t = new Node(i);
+            insert(q, t, freqArray[i]);
+        }
+    }    
 }
 
 

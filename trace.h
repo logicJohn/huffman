@@ -9,11 +9,15 @@
 #define TRACE_H
 
 #include <cstdio>
+#include "tree.h"
+
 using namespace std;
 
 extern int traceEnabled;
 
 void printDescription(int x);
+void printArray(int* a, int length);
+void printTree(Tree head);
 
 
 #endif

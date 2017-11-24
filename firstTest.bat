@@ -6,7 +6,7 @@ echo Test file executed.
 echo I am too lazy to write commands again and again
 pause
 
-g++ -g -w -o huffmanTest.exe huffman.cpp trace.cpp
+g++ -g -w -o huffmanTest.exe huffman.cpp trace.cpp pqueue.cpp
 
 pause
 
