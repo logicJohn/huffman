@@ -1,6 +1,7 @@
 #ifndef TREE_H
 #define TREE_H
 
+
   // Each node is either a leaf or a nonleaf.  Type
   // NodeKind has just two values: leaf and nonleaf.
 

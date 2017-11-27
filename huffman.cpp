@@ -23,6 +23,7 @@ FILE* openOutFile(const char* fileName);
 Tree buildHuffmanTree( int* freqArray, int length);
 void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 
+
 int traceEnabled = 0;
 
 
@@ -51,8 +52,9 @@ int main(int argc, char* argv[]){
     printArray(freqArray, arrayLength);
     Tree huffmanTree;
     huffmanTree = buildHuffmanTree(freqArray, arrayLength);
-    //printTree( huffmanTree );
+    tracePrintTree( huffmanTree );
     printf("finished\n");
+    delete huffmanTree;
     delete[] freqArray;
     return 0;
 }   

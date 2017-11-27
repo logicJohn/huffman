@@ -17,7 +17,8 @@ extern int traceEnabled;
 
 void printDescription(int x);
 void printArray(int* a, int length);
-void printTree(Tree head);
+void tracePrintTree(Tree head);
+
 
 
 #endif
