@@ -22,12 +22,14 @@ FILE* openInFile(const char* fileNmae);
 FILE* openOutFile(const char* fileName);
 Tree buildHuffmanTree( int* freqArray, int length);
 void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
-
+void buildCode(Tree q, char* Code[], int length);
 
 int traceEnabled = 0;
 
 
 int main(int argc, char* argv[]){
+    //make the -t filename 1 and filename 2 a helper function
+    //use a loop to check the whole input for the correct info
     if (argc > 3) {
         if ( strcmp(argv[1], "-t") == 0 ) {
             traceEnabled = 1;
@@ -44,7 +46,8 @@ int main(int argc, char* argv[]){
 
     int arrayLength = 256;
     int* freqArray;
-    freqArray = new int[256];
+    char* codeBlock[arrayLength];
+    freqArray = new int[arrayLength];
     if (!freqCount(freqArray, arrayLength, A)){
         printf(" File read returned NULL\n");
         return 1;
@@ -53,7 +56,10 @@ int main(int argc, char* argv[]){
     Tree huffmanTree;
     huffmanTree = buildHuffmanTree(freqArray, arrayLength);
     tracePrintTree( huffmanTree );
+    
+    buildCode(huffmanTree, codeBlock, arrayLength);
     printf("finished\n");
+    
     delete huffmanTree;
     delete[] freqArray;
     return 0;
@@ -142,4 +148,31 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
     }    
 }
 
+void setCharArray( char* Code[], int length){
+    for (int i = 0; i <= length; i++){
+        Code[i] = "\0";
+    }
+    return;    
+}
+
+void fillArray(Tree head, char* Code[], int length){
+    if (head->kind == NodeKind(1)){
+        if (head->left != NULL){
+                fillArray(head->left, Code, length);
+        }
+        if (head->right != NULL){
+            fillArray(head->right, Code, length);
+        }
+    }
+    if (head->kind == NodeKind(0)){
+       
+       Code[head->ch] = "0";
+       
+    }
+}
+
+void buildCode(Tree head, char* Code[], int length){
+    setCharArray(Code, length);
+    fillArray(head, Code, length);
+}
 
