@@ -25,7 +25,7 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 void buildCode(Tree q, const char* Code[], int length);
 void setCharArray(const char* Code[], int length);
 void fillArray(Tree head,const char* Code[],const char* prefix);
-void printCharArray(const char* Code[], int length);
+
 
 int traceEnabled = 0;
 
@@ -162,15 +162,20 @@ void setCharArray(const char* Code[], int length){
 void fillArray(Tree head,const char* Code[],const char* prefix){
     printf("line 163 \n");
     printf(" prefix: %s",prefix );
-    char* temp;
-    temp = strcpy(temp,prefix);
-    printf(" temp: %s", temp );
     if (head->kind == NodeKind(1)){
         if (head->right != NULL){
-            fillArray(head->right, Code, strcat(temp,"0"));
+            char* right = new char[strlen(prefix)+2];
+            right = strcpy(right,prefix);
+            right = strcat(right,"1");
+            printf(" right: %s\n", right );
+            fillArray(head->right, Code, right);
         }
         if (head->left != NULL){
-            fillArray(head->left, Code, strcat(temp,"0"));
+            char* left = new char[strlen(prefix)+2];
+            left = strcpy(left,prefix);
+            left = strcat(left, "0");
+            printf(" left: %s\n", left );
+            fillArray(head->left, Code, left);
         }
     }
     if (head->kind == NodeKind(0)){
@@ -184,17 +189,7 @@ void buildCode(Tree head,const char* Code[], int length){
     printf("line 179 \n");
     setCharArray(Code, length);
     printf("line 181 \n");
-    fillArray(head, Code, "0");
+    fillArray(head, Code, "");
     printf("line 183 \n");
     printCharArray(Code, length);
-}
-
-void printCharArray(const char* Code[], int length){
-    for (int i = 0; i<length; i++){
-        
-        if (strcmp(Code[i], "\0") != 0){
-            printf("%d\n", Code[i]);
-        }
-    }
-    
 }

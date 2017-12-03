@@ -83,7 +83,20 @@ void tracePrintTree(Tree head){
 }
 
 
-
+void printCharArray(const char* Code[], int length){
+    if (traceEnabled == 0){
+        return;
+    }
+    
+    for (int i = 0; i<length; i++){
+        
+        if (strcmp(Code[i], "\0") != 0){
+            printDescription(i);
+            printf("= %s\n",  Code[i]);
+        }
+    }
+    
+}
 
 
 
