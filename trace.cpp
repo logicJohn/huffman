@@ -57,19 +57,22 @@ void printArray(int* a, int length){
 
 
 void printTree(Tree head){
+    
     if (head->kind == NodeKind(1)){
+
         if (head->left != NULL){
             printTree(head->left);
         }
         if (head->right != NULL){
             printTree(head->right);
         }
-    }
+    } 
     if (head->kind == NodeKind(0)){
         printf(" Char = ");
         printDescription(head->ch);
         printf(" \n");
     }
+
 }
 
 void tracePrintTree(Tree head){
