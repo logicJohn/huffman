@@ -24,7 +24,7 @@ Tree buildHuffmanTree( int* freqArray, int length);
 void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 void buildCode(Tree q, const char* Code[], int length);
 void setCharArray(const char* Code[], int length);
-void fillArray(Tree head,const char* Code[], char* prefix);
+void fillArray(Tree head,const char* Code[],const char* prefix);
 void printCharArray(const char* Code[], int length);
 
 int traceEnabled = 0;
@@ -159,15 +159,18 @@ void setCharArray(const char* Code[], int length){
     return;    
 }
 
-void fillArray(Tree head,const char* Code[], char* prefix){
+void fillArray(Tree head,const char* Code[],const char* prefix){
     printf("line 163 \n");
     printf(" prefix: %s",prefix );
+    char* temp;
+    temp = strcpy(temp,prefix);
+    printf(" temp: %s", temp );
     if (head->kind == NodeKind(1)){
         if (head->right != NULL){
-            fillArray(head->right, Code, prefix+"1");
+            fillArray(head->right, Code, strcat(temp,"0"));
         }
         if (head->left != NULL){
-            fillArray(head->left, Code, strcat(prefix,"0"));
+            fillArray(head->left, Code, strcat(temp,"0"));
         }
     }
     if (head->kind == NodeKind(0)){
