@@ -13,6 +13,7 @@
 #include "trace.h"
 #include "tree.h"
 #include "pqueue.h"
+#include "binary.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 void buildCode(Tree q, const char* Code[], int length);
 void setCharArray(const char* Code[], int length);
 void fillArray(Tree head,const char* Code[],const char* prefix);
+void writeBinary(const char* fileName, Tree head);
+void writeTreeBinary(Tree head, BFILE* f);
 
 
 int traceEnabled = 0;
@@ -62,6 +65,8 @@ int main(int argc, char* argv[]){
     
 
     buildCode(huffmanTree, codeBlock, arrayLength);
+    
+    writeBinary(B, huffmanTree);
     printf("finished\n");
     
     delete huffmanTree;
@@ -129,7 +134,7 @@ Tree buildHuffmanTree(int* freqArray, int length){
     buildPriorityQueue(q, freqArray, length);
     while (!isEmpty(q)){
         remove(q, r, l);
-        if( isEmpty(q) ){
+        if (isEmpty(q)){
             Tree temp = r;
             return temp;
         }
@@ -159,7 +164,7 @@ void setCharArray(const char* Code[], int length){
     return;    
 }
 
-void fillArray(Tree head,const char* Code[],const char* prefix){
+void fillArray(Tree head ,const char* Code[],const char* prefix){
     printf("line 163 \n");
     printf(" prefix: %s",prefix );
     if (head->kind == NodeKind(1)){
@@ -178,7 +183,7 @@ void fillArray(Tree head,const char* Code[],const char* prefix){
             fillArray(head->left, Code, left);
         }
     }
-    if (head->kind == NodeKind(0)){
+    else if (head->kind == NodeKind(0)){
        printf("line 175 \n");
        Code[head->ch] = prefix;
        
@@ -192,4 +197,27 @@ void buildCode(Tree head,const char* Code[], int length){
     fillArray(head, Code, "");
     printf("line 183 \n");
     printCharArray(Code, length);
+}
+
+void writeTreeBinary(BFILE* f,Tree head){
+    if (head->kind == NodeKind(0)){
+        printf("1 + char + ");
+        writeBit(f, 1);
+        writeByte(f, head->ch);
+        
+    }
+    else if (head->kind == NodeKind(1)){
+        printf("0 + ");
+        writeBit(f, 0);
+        writeTreeBinary(f, head->left);
+        writeTreeBinary(f, head->right);    
+    }
+}
+
+void writeBinary(const char* fileName, Tree head){
+    tracePrintTree(head);
+    BFILE* file = openBinaryFileWrite(fileName);
+    
+    writeTreeBinary(file, head);
+    closeBinaryFileWrite(file);
 }
