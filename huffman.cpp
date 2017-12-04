@@ -29,7 +29,7 @@ void fillArray(Tree head,const char* Code[],const char* prefix);
 void writeBinary(BFILE* file, Tree head);
 void writeTreeBinary(Tree head, BFILE* f);
 void writeCompressed( const char* readFile, BFILE* binaryFile, const char* Code[]);
-
+void writeCodeBinary(BFILE* binaryFile, const char* code);
 
 
 int traceEnabled = 0;
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
     buildCode(huffmanTree, codeBlock, arrayLength);
     BFILE* binaryFile = openBinaryFileWrite(B);
     writeBinary(binaryFile, huffmanTree);
-    writeCompressed(B, binaryFile, codeBlock);
+    writeCompressed(A, binaryFile, codeBlock);
     closeBinaryFileWrite(binaryFile);
     printf("finished\n");
     
@@ -224,10 +224,19 @@ void writeTreeBinary(BFILE* f,Tree head){
 
 void writeBinary(BFILE* file, Tree head){
     tracePrintTree(head);
-    
-    
     writeTreeBinary(file, head);
+}
 
+void writeCodeBinary(BFILE* binaryFile, const char* code){
+  
+    for (int i = 0; code[i] != '\0' ; i++ ){
+        if( code[i] == '0'){
+            writeBit(binaryFile, 0);
+        }
+        else if( code[i] == '1'){
+            writeBit(binaryFile, 1);
+        }
+    }
 }
 
 void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]){
@@ -235,7 +244,7 @@ void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]
     
     int tempChar = getc(read);
     while (tempChar != EOF){
-        fputs(Code[tempChar], binaryFile);
+        writeCodeBinary(binaryFile, Code[tempChar]);
         tempChar = getc(read);
     }
 }
