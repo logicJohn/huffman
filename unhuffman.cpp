@@ -38,7 +38,6 @@ int main(int argc, char** argv)
     FILE* outFile = fopen(B, "w");
     Tree huffmanTree;
 
-    
     huffmanTree = binaryToTree(f,  readBit(f));
     tracePrintTree(huffmanTree);
     writeBinaryText(huffmanTree, f, outFile);
@@ -46,7 +45,7 @@ int main(int argc, char** argv)
     closeBinaryFileRead(f);
     fclose(outFile);
     
-
+    delete huffmanTree;
     return 0;
 }
 

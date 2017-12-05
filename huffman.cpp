@@ -56,19 +56,16 @@ int main(int argc, char* argv[]) {
     printArray(freqArray, arrayLength);
     
     huffmanTree = buildHuffmanTree(freqArray, arrayLength);
-    
-    tracePrintTree( huffmanTree );
-    
+    printf("test");
+    tracePrintTree(huffmanTree);
+    printf("broke");
     buildCode(huffmanTree, codeBlock, arrayLength);
     
     BFILE* binaryFile = openBinaryFileWrite(B);
     writeTreeBinary(binaryFile, huffmanTree);
     writeCompressed(A, binaryFile, codeBlock);
     closeBinaryFileWrite(binaryFile);
-    printf("finished\n");
-    
-    
-    
+
     delete huffmanTree;
     delete[] freqArray;
     return 0;
@@ -185,7 +182,7 @@ Tree buildHuffmanTree(int* freqArray, int length) {
 
 void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length) {
     Tree t;
-    for (int i = 0; i < length; i++) {
+    for (int i = 0;i < length; i++) {
         if (freqArray[i] > 0) {
             t = new Node(i);
             insert(q, t, freqArray[i]);
@@ -217,7 +214,7 @@ void setCharArray(const char* Code[], int length) {
  ***********************************************/
  
 void fillArray(Tree head, const char* Code[], const char* prefix) {
-    if(head -> kind == NodeKind(0)) {
+    if (head->kind == NodeKind(0)) {
         Code[head->ch] = prefix;
     }
     else if (head->kind == NodeKind(1)) {
@@ -273,11 +270,11 @@ void writeTreeBinary(BFILE* f,Tree head) {
  ***********************************************/
 
 void writeCodeBinary(BFILE* binaryFile, const char* code) {
-    for (int i = 0; i < strlen(code) ; i++ ) {
-        if( code[i] == '0') {
+    for (int i = 0; i < strlen(code); i++) {
+        if (code[i] == '0') {
             writeBit(binaryFile, 0);
         }
-        else if( code[i] == '1') {
+        else if (code[i] == '1') {
             writeBit(binaryFile, 1);
         }
     }

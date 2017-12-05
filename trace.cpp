@@ -59,6 +59,7 @@ void printArray(int* a, int length) {
     if (traceEnabled == 0) {
         return;
     }
+    printf("\n The character Frequenceis are:\n");
     int counter=0;
     for (int i = 0; i < length; i++) {
         if (a[i] > 0) {
@@ -161,20 +162,26 @@ bool checkTrace(int argc, char* argv[]) {
  ***********************************************/
  
 void tracePrintTreeRoute(Tree head, const char* path) {
-
+    printf("line  165  \n");
     if(head -> kind == NodeKind(0)) {
+        printf("line  167  \n");
         printf("%s =", path );
         printf(" %c \n", head->ch);
+        printf("line  170  \n");
     }
     else if (head->kind == NodeKind(1)) {
-    
+        printf("line  173  \n");
         char* left = new char[strlen(path)+1];
         left = strcpy(left,path);
         left = strcat(left, "0");
         tracePrintTreeRoute(head->left, left);
+        printf("line  178  \n");
+        
+        printf("line  179  \n");
         char* right = new char[strlen(path)+1];
         right = strcpy(right,path);
         right = strcat(right,"1");
         tracePrintTreeRoute(head->right, right);
+        printf("line  184  \n");
     }
 }
