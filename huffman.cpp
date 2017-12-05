@@ -56,9 +56,9 @@ int main(int argc, char* argv[]) {
     printArray(freqArray, arrayLength);
     
     huffmanTree = buildHuffmanTree(freqArray, arrayLength);
-    printf("test");
+    
     tracePrintTree(huffmanTree);
-    printf("broke");
+    
     buildCode(huffmanTree, codeBlock, arrayLength);
     
     BFILE* binaryFile = openBinaryFileWrite(B);

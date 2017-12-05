@@ -107,8 +107,10 @@ void tracePrintTree(Tree head) {
     if (traceEnabled == 0) {
         return;
     }
+    printf("The Huffman Tree is as follows:\n");
     printTree(head);
-    tracePrintTreeRoute(head, "");
+    printf("\n\n");
+    //tracePrintTreeRoute(head, "");
 }
 
 /***********************************************
@@ -122,7 +124,8 @@ void tracePrintTree(Tree head) {
 void printCharArray(const char* Code[], int length) {
     if (traceEnabled == 0) {
         return;
-    }    
+    }
+    printf("Each characters binary path:\n");
     for (int i = 0; i<length; i++) {
         
         if (strcmp(Code[i], "\0") != 0) {
@@ -162,26 +165,19 @@ bool checkTrace(int argc, char* argv[]) {
  ***********************************************/
  
 void tracePrintTreeRoute(Tree head, const char* path) {
-    printf("line  165  \n");
+    
     if(head -> kind == NodeKind(0)) {
-        printf("line  167  \n");
         printf("%s =", path );
         printf(" %c \n", head->ch);
-        printf("line  170  \n");
     }
     else if (head->kind == NodeKind(1)) {
-        printf("line  173  \n");
         char* left = new char[strlen(path)+1];
         left = strcpy(left,path);
         left = strcat(left, "0");
         tracePrintTreeRoute(head->left, left);
-        printf("line  178  \n");
-        
-        printf("line  179  \n");
         char* right = new char[strlen(path)+1];
         right = strcpy(right,path);
         right = strcat(right,"1");
         tracePrintTreeRoute(head->right, right);
-        printf("line  184  \n");
     }
 }
