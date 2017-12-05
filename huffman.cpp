@@ -31,9 +31,9 @@ void writeCompressed( const char* readFile, BFILE* binaryFile, const char* Code[
 void writeCodeBinary(BFILE* binaryFile, const char* code);
 
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
     
-    if (!checkTrace(argc, argv)){
+    if (!checkTrace(argc, argv)) {
         return 1;
     }
     
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
     Tree huffmanTree;
     
     
-    if (!freqCount(freqArray, arrayLength, A)){
+    if (!freqCount(freqArray, arrayLength, A)) {
         printf(" File read returned NULL\n");
         return 1;
     }
@@ -84,14 +84,14 @@ int main(int argc, char* argv[]){
  * unable to open.                             *
  ***********************************************/
  
-bool freqCount(int* a, int length, const char* file){
+bool freqCount(int* a, int length, const char* file) {
     setArray(a , length);
     FILE* f = openInFile(file);
-    if (f == NULL){
+    if (f == NULL) {
         return false;
     }
     int c = fgetc(f);
-    while (c != EOF){
+    while (c != EOF) {
         a[c]++;
         c = getc(f);
     }
@@ -106,8 +106,8 @@ bool freqCount(int* a, int length, const char* file){
  * 0 from a[0] to length.                      *
   ***********************************************/
 
-void setArray(int* a, int length){
-    for (int i = 0; i <= length; i++){
+void setArray(int* a, int length) {
+    for (int i = 0; i <= length; i++) {
         a[i] = 0;
     }
     return;
@@ -121,9 +121,9 @@ void setArray(int* a, int length){
  * console message and return NULL.            *
  ***********************************************/
 
-FILE* openInFile(const char* fileName){
+FILE* openInFile(const char* fileName) {
     FILE* infile = fopen(fileName, "r");
-    if (infile == NULL){
+    if (infile == NULL) {
         printf("Cannot open file %s for reading\n", fileName);
         return NULL;
     }
@@ -139,9 +139,9 @@ FILE* openInFile(const char* fileName){
  * console message and return NULL.            *
  ***********************************************/
 
-FILE* openOutFile(const char* fileName){
+FILE* openOutFile(const char* fileName) {
     FILE* outfile = fopen(fileName, "w");
-    if (outfile == NULL){
+    if (outfile == NULL) {
         printf("cannnot open file %s for writing\n", fileName);
         return NULL;
     }
@@ -156,15 +156,15 @@ FILE* openOutFile(const char* fileName){
  * in freqArray from 0 to 1                    *
  ***********************************************/
 
-Tree buildHuffmanTree(int* freqArray, int length){
+Tree buildHuffmanTree(int* freqArray, int length) {
     PriorityQueue  q;
     ItemType r, s;
     PriorityType l,m;
   
     buildPriorityQueue(q, freqArray, length);
-    while (!isEmpty(q)){
+    while (!isEmpty(q)) {
         remove(q, r, l);
-        if (isEmpty(q)){
+        if (isEmpty(q)) {
             Tree temp = r;
             return temp;
         }
@@ -183,10 +183,10 @@ Tree buildHuffmanTree(int* freqArray, int length){
  * 0 to length.                                *
  ***********************************************/
 
-void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
+void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length) {
     Tree t;
-    for (int i = 0; i < length; i++){
-        if (freqArray[i] > 0){
+    for (int i = 0; i < length; i++) {
+        if (freqArray[i] > 0) {
             t = new Node(i);
             insert(q, t, freqArray[i]);
         }
@@ -201,8 +201,8 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
  * to equal "\0"                               *
  ***********************************************/
  
-void setCharArray(const char* Code[], int length){
-    for (int i = 0; i <= length; i++){
+void setCharArray(const char* Code[], int length) {
+    for (int i = 0; i <= length; i++) {
         Code[i] = "\0";
     }
     return;    
@@ -216,11 +216,11 @@ void setCharArray(const char* Code[], int length){
  * head.                                       *
  ***********************************************/
  
-void fillArray(Tree head, const char* Code[], const char* prefix){
-    if(head -> kind == NodeKind(0)){
+void fillArray(Tree head, const char* Code[], const char* prefix) {
+    if(head -> kind == NodeKind(0)) {
         Code[head->ch] = prefix;
     }
-    else if (head->kind == NodeKind(1)){
+    else if (head->kind == NodeKind(1)) {
         char* left = new char[strlen(prefix)+1];
         left = strcpy(left,prefix);
         left = strcat(left, "0");
@@ -239,7 +239,7 @@ void fillArray(Tree head, const char* Code[], const char* prefix){
  * a string representing each chracter in tree.*
  ***********************************************/
  
-void buildCode(Tree head, const char* Code[], int length){
+void buildCode(Tree head, const char* Code[], int length) {
     setCharArray(Code, length);
     fillArray(head, Code, "");
     printCharArray(Code, length);
@@ -253,12 +253,12 @@ void buildCode(Tree head, const char* Code[], int length){
  * in tree to the file f.                      *
  ***********************************************/
 
-void writeTreeBinary(BFILE* f,Tree head){
-    if (head->kind == NodeKind(0)){
+void writeTreeBinary(BFILE* f,Tree head) {
+    if (head->kind == NodeKind(0)) {
         writeBit(f, 1);
         writeByte(f, head->ch);
     }
-    else if (head->kind == NodeKind(1)){
+    else if (head->kind == NodeKind(1)) {
         writeBit(f, 0);
         writeTreeBinary(f, head->left);
         writeTreeBinary(f, head->right);    
@@ -272,12 +272,12 @@ void writeTreeBinary(BFILE* f,Tree head){
  * not including the "\0"                      *
  ***********************************************/
 
-void writeCodeBinary(BFILE* binaryFile, const char* code){
-    for (int i = 0; i < strlen(code) ; i++ ){
-        if( code[i] == '0'){
+void writeCodeBinary(BFILE* binaryFile, const char* code) {
+    for (int i = 0; i < strlen(code) ; i++ ) {
+        if( code[i] == '0') {
             writeBit(binaryFile, 0);
         }
-        else if( code[i] == '1'){
+        else if( code[i] == '1') {
             writeBit(binaryFile, 1);
         }
     }
@@ -292,11 +292,11 @@ void writeCodeBinary(BFILE* binaryFile, const char* code){
  * binaryFile.                                 *
  ***********************************************/
 
-void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]){
+void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]) {
     FILE*  read  = openInFile(readFile);
     
     int temp = getc(read);
-    while (temp != EOF){
+    while (temp != EOF) {
         writeCodeBinary(binaryFile, Code[temp]);
         temp = getc(read);
     }

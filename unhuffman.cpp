@@ -26,7 +26,7 @@ char searchTree(Tree head, BFILE* read, int temp);
 
 int main(int argc, char** argv)
 {
-    if (!checkTrace(argc, argv)){
+    if (!checkTrace(argc, argv)) {
         return 1;
     }
 
@@ -57,12 +57,12 @@ int main(int argc, char** argv)
  * and creating a the tree based off of x.     *
  ***********************************************/
  
-Tree binaryToTree(BFILE* f,  int x){
-    if (x == 1){
+Tree binaryToTree(BFILE* f,  int x) {
+    if (x == 1) {
         Tree head = new Node(readByte(f));
         return head;
     } 
-    if (x == 0){
+    if (x == 0) {
         Tree head = new Node(binaryToTree(f, readBit(f)) , binaryToTree(f, readBit(f)));
         return head;
     }
@@ -77,10 +77,10 @@ Tree binaryToTree(BFILE* f,  int x){
  * location in head.                           *
  ***********************************************/
  
-void writeBinaryText(Tree head, BFILE* read, FILE* write){
+void writeBinaryText(Tree head, BFILE* read, FILE* write) {
     int temp = readBit(read);
     Tree tempHead = head;
-    while(temp != EOF){
+    while(temp != EOF) {
         tempHead = head;
         putc(searchTree(tempHead, read, temp), write);
         temp = readBit(read);
@@ -96,16 +96,16 @@ void writeBinaryText(Tree head, BFILE* read, FILE* write){
  * temp.  Returns the tree value when found.   *
  ***********************************************/
  
-char searchTree( Tree head, BFILE* read, int temp){
-    if (head->kind == NodeKind(1)){
-        if (temp == 0){
-            if(head->left->kind == 0){
+char searchTree( Tree head, BFILE* read, int temp) {
+    if (head->kind == NodeKind(1)) {
+        if (temp == 0) {
+            if(head->left->kind == 0) {
                 return head->left->ch;
             }
             return searchTree(head->left, read, readBit(read));
         }
-        else if (temp == 1){
-            if(head->right->kind == 0){
+        else if (temp == 1) {
+            if(head->right->kind == 0) {
                 return head->right->ch;
             }
             return searchTree(head->right, read, readBit(read));

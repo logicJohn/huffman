@@ -31,14 +31,14 @@ void printTree(Tree head);
  * If char i has no print value print the      *
  * symbol at i or "\i".                        *
  ***********************************************/
-void printDescription(int i){
-    if (i == 32){
+void printDescription(int i) {
+    if (i == 32) {
         printf("SPACE");
     }
-    else if (i == 10){
+    else if (i == 10) {
         printf("\\n");
     }
-    else if (isprint(i)){
+    else if (isprint(i)) {
         printf("%c", i);
     }
     else {
@@ -55,18 +55,18 @@ void printDescription(int i){
  * as chracters to the screen                  *
  ***********************************************/
  
-void printArray(int* a, int length){
-    if (traceEnabled == 0){
+void printArray(int* a, int length) {
+    if (traceEnabled == 0) {
         return;
     }
     int counter=0;
-    for (int i = 0; i < length; i++){
-        if (a[i] > 0){
+    for (int i = 0; i < length; i++) {
+        if (a[i] > 0) {
             printf(" ");
             printDescription( i);
             printf(" = %i " , a[i]);
             counter++;
-            if (counter % 3 == 0){
+            if (counter % 3 == 0) {
                 
                 printf("\n");
                 counter = 0;
@@ -82,12 +82,12 @@ void printArray(int* a, int length){
  * Print all characters in the tree head.      *
  ***********************************************/
 
-void printTree(Tree head){
-    if (head->kind == NodeKind(1)){
+void printTree(Tree head) {
+    if (head->kind == NodeKind(1)) {
         printTree(head->left);
         printTree(head->right);
     } 
-    else if (head->kind == NodeKind(0)){
+    else if (head->kind == NodeKind(0)) {
         printf(" Char = ");
         unsigned char temp = head->ch;
         printDescription(temp);
@@ -102,8 +102,8 @@ void printTree(Tree head){
  * If it is then print the tree head.          *
  ***********************************************/
  
-void tracePrintTree(Tree head){
-    if (traceEnabled == 0){
+void tracePrintTree(Tree head) {
+    if (traceEnabled == 0) {
         return;
     }
     printTree(head);
@@ -118,13 +118,13 @@ void tracePrintTree(Tree head){
  * the array Code from 0 to length.            *
  ***********************************************/
 
-void printCharArray(const char* Code[], int length){
-    if (traceEnabled == 0){
+void printCharArray(const char* Code[], int length) {
+    if (traceEnabled == 0) {
         return;
     }    
-    for (int i = 0; i<length; i++){
+    for (int i = 0; i<length; i++) {
         
-        if (strcmp(Code[i], "\0") != 0){
+        if (strcmp(Code[i], "\0") != 0) {
             printDescription(i);
             printf("= %s\n",  Code[i]);
         }
@@ -139,7 +139,7 @@ void printCharArray(const char* Code[], int length){
  * is included.  If it enabled tracing.        *
  ***********************************************/
  
-bool checkTrace(int argc, char* argv[]){
+bool checkTrace(int argc, char* argv[]) {
     if (argc > 3) {
         if ( strcmp(argv[1], "-t") == 0 ) {
             traceEnabled = 1;
@@ -160,13 +160,13 @@ bool checkTrace(int argc, char* argv[]){
  * 0's mean move right and 1's mean move left  *
  ***********************************************/
  
-void tracePrintTreeRoute(Tree head, const char* path){
+void tracePrintTreeRoute(Tree head, const char* path) {
 
-    if(head -> kind == NodeKind(0)){
+    if(head -> kind == NodeKind(0)) {
         printf("%s =", path );
         printf(" %c \n", head->ch);
     }
-    else if (head->kind == NodeKind(1)){
+    else if (head->kind == NodeKind(1)) {
     
         char* left = new char[strlen(path)+1];
         left = strcpy(left,path);
