@@ -83,7 +83,6 @@ void writeBinaryText(Tree head, BFILE* read, FILE* write) {
         tempHead = head;
         putc(searchTree(tempHead, read, temp), write);
         temp = readBit(read);
-        
     }
 }
 

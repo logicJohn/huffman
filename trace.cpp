@@ -59,7 +59,7 @@ void printArray(int* a, int length) {
     if (traceEnabled == 0) {
         return;
     }
-    printf("\n The character Frequenceis are:\n");
+    printf("\n The character Frequences are:\n");
     int counter=0;
     for (int i = 0; i < length; i++) {
         if (a[i] > 0) {
@@ -110,7 +110,8 @@ void tracePrintTree(Tree head) {
     printf("The Huffman Tree is as follows:\n");
     printTree(head);
     printf("\n\n");
-    //tracePrintTreeRoute(head, "");
+    printf("Each character path in the Huffman tree:\n");
+    tracePrintTreeRoute(head, "");
 }
 
 /***********************************************
@@ -166,7 +167,7 @@ bool checkTrace(int argc, char* argv[]) {
  
 void tracePrintTreeRoute(Tree head, const char* path) {
     
-    if(head -> kind == NodeKind(0)) {
+    if(head->kind == NodeKind(0)) {
         printf("%s =", path );
         printf(" %c \n", head->ch);
     }
