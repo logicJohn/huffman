@@ -221,14 +221,14 @@ void fillArray(Tree head, const char* Code[], const char* prefix){
         Code[head->ch] = prefix;
     }
     else if (head->kind == NodeKind(1)){
-            char* left = new char[strlen(prefix)+1];
-            left = strcpy(left,prefix);
-            left = strcat(left, "0");
-            fillArray(head->left, Code, left);        
-            char* right = new char[strlen(prefix)+1];
-            right = strcpy(right,prefix);
-            right = strcat(right,"1");
-            fillArray(head->right, Code, right);
+        char* left = new char[strlen(prefix)+1];
+        left = strcpy(left,prefix);
+        left = strcat(left, "0");
+        fillArray(head->left, Code, left);        
+        char* right = new char[strlen(prefix)+1];
+        right = strcpy(right,prefix);
+        right = strcat(right,"1");
+        fillArray(head->right, Code, right);
     }
 }
 
@@ -259,7 +259,6 @@ void writeTreeBinary(BFILE* f,Tree head){
         writeByte(f, head->ch);
     }
     else if (head->kind == NodeKind(1)){
-       
         writeBit(f, 0);
         writeTreeBinary(f, head->left);
         writeTreeBinary(f, head->right);    

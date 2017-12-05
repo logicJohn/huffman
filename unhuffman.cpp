@@ -26,13 +26,8 @@ char searchTree(Tree head, BFILE* read, int temp);
 
 int main(int argc, char** argv)
 {
-    if (argc > 2) {
-        if ( strcmp(argv[1], "-t") == 0 ) {
-            traceEnabled = 1;
-        } else {
-            printf("\n usage: huffman [-t] \n");
-            return 1;
-        }
+    if (!checkTrace(argc, argv)){
+        return 1;
     }
 
     const char* A;
@@ -85,17 +80,12 @@ Tree binaryToTree(BFILE* f,  int x){
 void writeBinaryText(Tree head, BFILE* read, FILE* write){
     int temp = readBit(read);
     Tree tempHead = head;
-    tracePrintTree(tempHead);
-    printf("temp bit read\n");
     while(temp != EOF){
         tempHead = head;
-        
         putc(searchTree(tempHead, read, temp), write);
-        printf("\n", temp);
         temp = readBit(read);
         
     }
-            
 }
 
 /***********************************************
@@ -107,23 +97,18 @@ void writeBinaryText(Tree head, BFILE* read, FILE* write){
  ***********************************************/
  
 char searchTree( Tree head, BFILE* read, int temp){
-        
-    printf(" %i ", temp);
     if (head->kind == NodeKind(1)){
         if (temp == 0){
+            if(head->left->kind == 0){
+                return head->left->ch;
+            }
             return searchTree(head->left, read, readBit(read));
-            
         }
         else if (temp == 1){
+            if(head->right->kind == 0){
+                return head->right->ch;
+            }
             return searchTree(head->right, read, readBit(read));
         }
     }
-    else if (head->kind == NodeKind(0)){
-        unsigned char tempChar =  head->ch;
-        printf("%c --", tempChar);
-        printf("%c", head->ch);
-        return tempChar;
-        
-    }
-
 }
