@@ -4,8 +4,12 @@
 // File:       trace.cpp
 // Tab stops:  8
 
-// Program 
-
+/*
+Trace.cpp holds a list of functions used by huffman.cpp and unhuffman.cpp.
+Functions under trace will only display information if the user has enabled
+trace by using the argument "-t" 
+Example ./huffman -t file1.txt file2.txt
+*/
 
 #include <cstdio>
 #include <cstring>
@@ -18,6 +22,13 @@ using namespace std;
 
 void printTree(Tree head);
 
+/***********************************************
+ *              printDescription               *
+ ***********************************************
+ * Print the character value of integer i.     *
+ * If char i has no print value print the      *
+ * symbol at i or "\i".                        *
+ ***********************************************/
 void printDescription(int i){
     if (i == 32){
         printf("SPACE");
@@ -33,7 +44,15 @@ void printDescription(int i){
     }
 }
 
-
+/***********************************************
+ *              printArray                     *
+ ***********************************************
+ * If traceEnabled is equal to true then       *
+ * search array a fromt 0 to length  for       *
+ * any non Null values and print the values    *
+ * as chracters to the screen                  *
+ ***********************************************/
+ 
 void printArray(int* a, int length){
     if (traceEnabled == 0){
         return;
@@ -55,11 +74,14 @@ void printArray(int* a, int length){
     printf("\n\n");
 }
 
+/***********************************************
+ *              printTree                      *
+ ***********************************************
+ * Print all characters in the tree head.      *
+ ***********************************************/
 
 void printTree(Tree head){
-    
     if (head->kind == NodeKind(1)){
-
         if (head->left != NULL){
             printTree(head->left);
         }
@@ -72,9 +94,15 @@ void printTree(Tree head){
         printDescription(head->ch);
         printf(" \n");
     }
-
 }
 
+/***********************************************
+ *              tracePrintTree                 *
+ ***********************************************
+ * Check to see if traceing is enabled.        *
+ * If it is then print the tree head.          *
+ ***********************************************/
+ 
 void tracePrintTree(Tree head){
     if (traceEnabled == 0){
         return;
@@ -82,12 +110,18 @@ void tracePrintTree(Tree head){
     printTree(head);
 }
 
+/***********************************************
+ *              printCharArray                 *
+ ***********************************************
+ * Check to see if trace is enabled.           *
+ * If trace is enabled print all strings in    *
+ * the array Code from 0 to length.            *
+ ***********************************************/
 
 void printCharArray(const char* Code[], int length){
     if (traceEnabled == 0){
         return;
-    }
-    
+    }    
     for (int i = 0; i<length; i++){
         
         if (strcmp(Code[i], "\0") != 0){
@@ -97,9 +131,3 @@ void printCharArray(const char* Code[], int length){
     }
     
 }
-
-
-
-
-
-

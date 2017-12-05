@@ -59,7 +59,13 @@ int main(int argc, char** argv)
     return 0;
 }
 
-
+/***********************************************
+ *              binaryToTree                   *
+ ***********************************************
+ * Returns a tree after reading f until a full *
+ * and creating a the tree based off of x.     *
+ ***********************************************/
+ 
 Tree binaryToTree(BFILE* f,  int x){
     if (x == 1){
         Tree head = new Node(readByte(f));
@@ -72,6 +78,14 @@ Tree binaryToTree(BFILE* f,  int x){
     
 }
 
+/***********************************************
+ *              writeBinaryText                *
+ ***********************************************
+ * Writes the file write by reading a set of   *
+ * characters in read and finding the matching *
+ * location in head.                           *
+ ***********************************************/
+ 
 void writeBinaryText(Tree head, BFILE* read, FILE* write){
     int temp = readBit(read);
     Tree tempHead;
@@ -85,6 +99,14 @@ void writeBinaryText(Tree head, BFILE* read, FILE* write){
             
 }
 
+/***********************************************
+ *              searchTree                     *
+ ***********************************************
+ * Traverse the tree head by reading a         *
+ * set of paths in read and current location   *
+ * temp.  Returns the tree value when found.   *
+ ***********************************************/
+ 
 char searchTree( Tree head, BFILE* read, int temp){
         
     if (head->kind == NodeKind(1)){
@@ -96,11 +118,7 @@ char searchTree( Tree head, BFILE* read, int temp){
         }
     }
     else if (head->kind == NodeKind(0)){
-        
-        printf(" Char = ");
-        printDescription(head->ch);
-        printf(" \n");
-        return head->ch;
+         return head->ch;
     }
 
 }

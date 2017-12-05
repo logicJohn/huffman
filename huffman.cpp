@@ -82,13 +82,17 @@ int main(int argc, char* argv[]){
     return 0;
 }   
 
-void charDescription(unsigned char c){
-    isprint(c);
-}
-
-
-
-bool freqCount(int* a, int length, const char* file ){
+/***********************************************
+ *              freqCount                      *
+ ***********************************************
+ * Sets an array from 0 to length with the     *
+ * total number of each chracter in file.      *
+ * FreqCount returns true if the file is open. *
+ * FreqCount returns false if the file is      *
+ * unable to open.                             *
+ ***********************************************/
+ 
+bool freqCount(int* a, int length, const char* file){
     setArray(a , length);
     FILE* f = openInFile(file);
     if (f == NULL){
@@ -103,7 +107,12 @@ bool freqCount(int* a, int length, const char* file ){
     return true;
 }
 
-
+/***********************************************
+ *               setarray                      *
+ ***********************************************
+ * setArray fills array a with the integer     *
+ * 0 from a[0] to length.                      *
+  ***********************************************/
 
 void setArray(int* a, int length){
     for (int i = 0; i <= length; i++){
@@ -112,7 +121,13 @@ void setArray(int* a, int length){
     return;
 }
 
-
+/***********************************************
+ *              openInFile                     *
+ ***********************************************
+ * Return an open FILE* for reading characters.*
+ * If file does not open openInFile will print *
+ * console message and return NULL.            *
+ ***********************************************/
 
 FILE* openInFile(const char* fileName){
     FILE* infile = fopen(fileName, "r");
@@ -124,6 +139,13 @@ FILE* openInFile(const char* fileName){
 }
 
 
+/***********************************************
+ *              openOutFile                    *
+ ***********************************************
+ * Return an open FILE* for writing characters.*
+ * If file does not open openOutFile will print*
+ * console message and return NULL.            *
+ ***********************************************/
 
 FILE* openOutFile(const char* fileName){
     FILE* outfile = fopen(fileName, "w");
@@ -133,6 +155,14 @@ FILE* openOutFile(const char* fileName){
     }
     return outfile;
 }
+
+/***********************************************
+ *              buildHuffmanTree               *
+ ***********************************************
+ * Build a huffman tree using freqArray.       *
+ * huffman tree will contain all chracters     *
+ * in freqArray from 0 to 1                    *
+ ***********************************************/
 
 Tree buildHuffmanTree(int* freqArray, int length){
     PriorityQueue  q;
@@ -154,6 +184,13 @@ Tree buildHuffmanTree(int* freqArray, int length){
 
 }
 
+/***********************************************
+ *              buildPriorityQueue             *
+ ***********************************************
+ * Build a PriorityQueue with freqArray from   *
+ * 0 to length.                                *
+ ***********************************************/
+
 void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
     Tree t;
     for (int i = 0; i < length; i++){
@@ -165,6 +202,13 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length){
    
 }
 
+/***********************************************
+ *              setCharArray                   *
+ ***********************************************
+ * Set all values in Code[] from 0 to length   *
+ * to equal "\0"                               *
+ ***********************************************/
+ 
 void setCharArray(const char* Code[], int length){
     for (int i = 0; i <= length; i++){
         Code[i] = "\0";
@@ -172,7 +216,15 @@ void setCharArray(const char* Code[], int length){
     return;    
 }
 
-void fillArray(Tree head ,const char* Code[],const char* prefix){
+/***********************************************
+ *              fillArray                      *
+ ***********************************************
+ * fillArray sets Code to prefix at the        *
+ * position of each chracter in the three      *
+ * head.                                       *
+ ***********************************************/
+ 
+void fillArray(Tree head, const char* Code[], const char* prefix){
     printf("line 163 \n");
     printf(" prefix: %s",prefix );
     if (head->kind == NodeKind(1)){
@@ -198,7 +250,14 @@ void fillArray(Tree head ,const char* Code[],const char* prefix){
     }
 }
 
-void buildCode(Tree head,const char* Code[], int length){
+/***********************************************
+ *              buildCode                      *
+ ***********************************************
+ * Fill the array Code from 0 to length with   *
+ * a string representing each chracter in tree.*
+ ***********************************************/
+ 
+void buildCode(Tree head, const char* Code[], int length){
     printf("line 179 \n");
     setCharArray(Code, length);
     printf("line 181 \n");
@@ -206,6 +265,14 @@ void buildCode(Tree head,const char* Code[], int length){
     printf("line 183 \n");
     printCharArray(Code, length);
 }
+
+/***********************************************
+ *              writeTreeBinary                *
+ ***********************************************
+ * Writes a binary File f with the tree head   *
+ * writing the binary path to each chracter    *
+ * in tree to the file f.                      *
+ ***********************************************/
 
 void writeTreeBinary(BFILE* f,Tree head){
     if (head->kind == NodeKind(0)){
@@ -222,10 +289,26 @@ void writeTreeBinary(BFILE* f,Tree head){
     }
 }
 
+/***********************************************
+ *              writeBinary                    *
+ ***********************************************
+ * Writes a binary File f with the paths in    *
+ * tree head.                                  *
+ * If trace is enabled then the function will  *
+ * also print the tree before writing.         *
+ ***********************************************/
+
 void writeBinary(BFILE* file, Tree head){
     tracePrintTree(head);
     writeTreeBinary(file, head);
 }
+
+/***********************************************
+ *              writeCodeBinary                *
+ ***********************************************
+ * Writes the string code into the binaryFile  *
+ * not including the "\0"                      *
+ ***********************************************/
 
 void writeCodeBinary(BFILE* binaryFile, const char* code){
   
@@ -238,6 +321,15 @@ void writeCodeBinary(BFILE* binaryFile, const char* code){
         }
     }
 }
+
+/***********************************************
+ *              writeCompressed                *
+ ***********************************************
+ * Writes binaryFile by reading each character *
+ * in readFile and finding the associated      *
+ * string in Code[] then writes the string to  *
+ * binaryFile.                                 *
+ ***********************************************/
 
 void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]){
     FILE*  read  = openInFile(readFile);
