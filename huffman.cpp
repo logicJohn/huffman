@@ -26,51 +26,43 @@ void buildPriorityQueue(PriorityQueue& q, int* freqArray, int length);
 void buildCode(Tree q, const char* Code[], int length);
 void setCharArray(const char* Code[], int length);
 void fillArray(Tree head,const char* Code[],const char* prefix);
-void writeBinary(BFILE* file, Tree head);
-void writeTreeBinary(Tree head, BFILE* f);
+void writeTreeBinary(BFILE* f, Tree head);
 void writeCompressed( const char* readFile, BFILE* binaryFile, const char* Code[]);
 void writeCodeBinary(BFILE* binaryFile, const char* code);
 
 
-int traceEnabled = 0;
-
-
 int main(int argc, char* argv[]){
-    //make the -t filename 1 and filename 2 a helper function
-    //use a loop to check the whole input for the correct info
-    if (argc > 3) {
-        if ( strcmp(argv[1], "-t") == 0 ) {
-            traceEnabled = 1;
-        } else {
-            printf("\n usage: huffman [-t] \n");
-            return 1;
-        }
+    
+    if (!checkTrace(argc, argv)){
+        return 1;
     }
     
-    const char* A;
-    const char* B;
-    
-    A = argv[argc-2];
-    B = argv[argc-1];
    
-
     int arrayLength = 256;
     int* freqArray;
     const char* codeBlock[arrayLength];
     freqArray = new int[arrayLength];
+    const char* A;
+    const char* B;
+    A = argv[argc-2];
+    B = argv[argc-1];
+    Tree huffmanTree;
+    
+    
     if (!freqCount(freqArray, arrayLength, A)){
         printf(" File read returned NULL\n");
         return 1;
     }
     printArray(freqArray, arrayLength);
-    Tree huffmanTree;
+    
     huffmanTree = buildHuffmanTree(freqArray, arrayLength);
+    
     tracePrintTree( huffmanTree );
     
-
     buildCode(huffmanTree, codeBlock, arrayLength);
+    
     BFILE* binaryFile = openBinaryFileWrite(B);
-    writeBinary(binaryFile, huffmanTree);
+    writeTreeBinary(binaryFile, huffmanTree);
     writeCompressed(A, binaryFile, codeBlock);
     closeBinaryFileWrite(binaryFile);
     printf("finished\n");
@@ -178,7 +170,7 @@ Tree buildHuffmanTree(int* freqArray, int length){
         }
         remove(q, s, m);
         Tree t = new Node(r, s);
-        l += m;
+        l = m+ l;
         insert(q, t, l); 
     }
 
@@ -225,28 +217,18 @@ void setCharArray(const char* Code[], int length){
  ***********************************************/
  
 void fillArray(Tree head, const char* Code[], const char* prefix){
-    printf("line 163 \n");
-    printf(" prefix: %s",prefix );
-    if (head->kind == NodeKind(1)){
-        if (head->right != NULL){
-            char* right = new char[strlen(prefix)+2];
-            right = strcpy(right,prefix);
-            right = strcat(right,"1");
-            printf(" right: %s\n", right );
-            fillArray(head->right, Code, right);
-        }
-        if (head->left != NULL){
-            char* left = new char[strlen(prefix)+2];
+    if(head -> kind == NodeKind(0)){
+        Code[head->ch] = prefix;
+    }
+    else if (head->kind == NodeKind(1)){
+            char* left = new char[strlen(prefix)+1];
             left = strcpy(left,prefix);
             left = strcat(left, "0");
-            printf(" left: %s\n", left );
-            fillArray(head->left, Code, left);
-        }
-    }
-    else if (head->kind == NodeKind(0)){
-       printf("line 175 \n");
-       Code[head->ch] = prefix;
-       
+            fillArray(head->left, Code, left);        
+            char* right = new char[strlen(prefix)+1];
+            right = strcpy(right,prefix);
+            right = strcat(right,"1");
+            fillArray(head->right, Code, right);
     }
 }
 
@@ -258,11 +240,8 @@ void fillArray(Tree head, const char* Code[], const char* prefix){
  ***********************************************/
  
 void buildCode(Tree head, const char* Code[], int length){
-    printf("line 179 \n");
     setCharArray(Code, length);
-    printf("line 181 \n");
     fillArray(head, Code, "");
-    printf("line 183 \n");
     printCharArray(Code, length);
 }
 
@@ -276,31 +255,15 @@ void buildCode(Tree head, const char* Code[], int length){
 
 void writeTreeBinary(BFILE* f,Tree head){
     if (head->kind == NodeKind(0)){
-        printf("1 + char + ");
         writeBit(f, 1);
         writeByte(f, head->ch);
-        
     }
     else if (head->kind == NodeKind(1)){
-        printf("0 + ");
+       
         writeBit(f, 0);
         writeTreeBinary(f, head->left);
         writeTreeBinary(f, head->right);    
     }
-}
-
-/***********************************************
- *              writeBinary                    *
- ***********************************************
- * Writes a binary File f with the paths in    *
- * tree head.                                  *
- * If trace is enabled then the function will  *
- * also print the tree before writing.         *
- ***********************************************/
-
-void writeBinary(BFILE* file, Tree head){
-    tracePrintTree(head);
-    writeTreeBinary(file, head);
 }
 
 /***********************************************
@@ -311,8 +274,7 @@ void writeBinary(BFILE* file, Tree head){
  ***********************************************/
 
 void writeCodeBinary(BFILE* binaryFile, const char* code){
-  
-    for (int i = 0; code[i] != '\0' ; i++ ){
+    for (int i = 0; i < strlen(code) ; i++ ){
         if( code[i] == '0'){
             writeBit(binaryFile, 0);
         }
@@ -334,10 +296,10 @@ void writeCodeBinary(BFILE* binaryFile, const char* code){
 void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]){
     FILE*  read  = openInFile(readFile);
     
-    int tempChar = getc(read);
-    while (tempChar != EOF){
-        writeCodeBinary(binaryFile, Code[tempChar]);
-        tempChar = getc(read);
+    int temp = getc(read);
+    while (temp != EOF){
+        writeCodeBinary(binaryFile, Code[temp]);
+        temp = getc(read);
     }
 }
 

@@ -1,8 +1,1 @@
-aaabbbbccccc/***********************************************
- *              buildHuffmanTree               *
- ***********************************************
- * Build a sorted Binary tree (max to min)     *
- * using freqArray from 0 to length. With      *
- * 0 to length. With rint value print the      *
- * symbol at i or "\i".                        *
- ***********************************************/
+ƒƒƒƒƒaaabbbbeec

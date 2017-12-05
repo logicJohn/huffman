@@ -15,10 +15,12 @@ using namespace std;
 
 extern int traceEnabled;
 
+bool checkTrace(int argc, char* argv[]);
 void printDescription(int x);
 void printArray(int* a, int length);
 void tracePrintTree(Tree head);
 void printCharArray(const char* Code[], int length);
+void tracePrintTreeRoute(Tree head, const char* path);
 
 
 

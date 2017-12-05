@@ -20,6 +20,8 @@ Example ./huffman -t file1.txt file2.txt
 #include <cstdio>
 using namespace std;
 
+int traceEnabled = 0;
+
 void printTree(Tree head);
 
 /***********************************************
@@ -82,16 +84,13 @@ void printArray(int* a, int length){
 
 void printTree(Tree head){
     if (head->kind == NodeKind(1)){
-        if (head->left != NULL){
-            printTree(head->left);
-        }
-        if (head->right != NULL){
-            printTree(head->right);
-        }
+        printTree(head->left);
+        printTree(head->right);
     } 
-    if (head->kind == NodeKind(0)){
+    else if (head->kind == NodeKind(0)){
         printf(" Char = ");
-        printDescription(head->ch);
+        unsigned char temp = head->ch;
+        printDescription(temp);
         printf(" \n");
     }
 }
@@ -108,6 +107,7 @@ void tracePrintTree(Tree head){
         return;
     }
     printTree(head);
+    tracePrintTreeRoute(head, "");
 }
 
 /***********************************************
@@ -130,4 +130,51 @@ void printCharArray(const char* Code[], int length){
         }
     }
     
+}
+
+/***********************************************
+ *              checkTrace                     *
+ ***********************************************
+ * looks through the the argv to see if "-t"   *
+ * is included.  If it enabled tracing.        *
+ ***********************************************/
+ 
+bool checkTrace(int argc, char* argv[]){
+    if (argc > 3) {
+        if ( strcmp(argv[1], "-t") == 0 ) {
+            traceEnabled = 1;
+            return true;
+        } else {
+            printf("\n usage: huffman [-t] \n");
+            return false;
+        }
+    }
+    else return true;
+}
+
+/***********************************************
+ *              tracePrintTreeRoute            *
+ ***********************************************
+ * Prints the location of each chracter in     *
+ * The tree as a path of 0's and 1's.          *
+ * 0's mean move right and 1's mean move left  *
+ ***********************************************/
+ 
+void tracePrintTreeRoute(Tree head, const char* path){
+
+    if(head -> kind == NodeKind(0)){
+        printf("%s =", path );
+        printf(" %c \n", head->ch);
+    }
+    else if (head->kind == NodeKind(1)){
+    
+        char* left = new char[strlen(path)+1];
+        left = strcpy(left,path);
+        left = strcat(left, "0");
+        tracePrintTreeRoute(head->left, left);
+        char* right = new char[strlen(path)+1];
+        right = strcpy(right,path);
+        right = strcat(right,"1");
+        tracePrintTreeRoute(head->right, right);
+    }
 }

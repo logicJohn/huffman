@@ -22,7 +22,7 @@ Tree binaryToTree(BFILE* f, int x);
 void writeBinaryText(Tree head, BFILE* read, FILE* write);
 char searchTree(Tree head, BFILE* read, int temp);
 
-int traceEnabled = 0;
+
 
 int main(int argc, char** argv)
 {
@@ -43,13 +43,9 @@ int main(int argc, char** argv)
     FILE* outFile = fopen(B, "w");
     Tree huffmanTree;
 
-    int temp = readBit(f);
-    if( temp != EOF){
-        huffmanTree = binaryToTree(f,  temp);
-    }
-
-    tracePrintTree(huffmanTree);
     
+    huffmanTree = binaryToTree(f,  readBit(f));
+    tracePrintTree(huffmanTree);
     writeBinaryText(huffmanTree, f, outFile);
     
     closeBinaryFileRead(f);
@@ -89,9 +85,10 @@ Tree binaryToTree(BFILE* f,  int x){
 void writeBinaryText(Tree head, BFILE* read, FILE* write){
     int temp = readBit(read);
     Tree tempHead;
-  
+    printf("temp bit read\n");
     while(temp != EOF){
         tempHead = head;
+        printf(" %i \n", temp);
         putc(searchTree(tempHead, read, temp), write);
         temp = readBit(read);
         
@@ -109,9 +106,11 @@ void writeBinaryText(Tree head, BFILE* read, FILE* write){
  
 char searchTree( Tree head, BFILE* read, int temp){
         
+    printf(" %i ", temp);
     if (head->kind == NodeKind(1)){
         if (temp == 0){
             return searchTree(head->left, read, readBit(read));
+            
         }
         if (temp == 1){
             return searchTree(head->right, read, readBit(read));
@@ -119,6 +118,7 @@ char searchTree( Tree head, BFILE* read, int temp){
     }
     else if (head->kind == NodeKind(0)){
          return head->ch;
+         printf("\n");
     }
 
 }
