@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     tracePrintTree(huffmanTree);
     
     buildCode(huffmanTree, codeBlock, arrayLength);
-    
+    printf("I made it here\n");
     BFILE* binaryFile = openBinaryFileWrite(B);
     writeTreeBinary(binaryFile, huffmanTree);
     writeCompressed(A, binaryFile, codeBlock);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
 /***********************************************
  *              freqCount                      *
  ***********************************************
- * Sets an array from 0 to length with the     *
+ * Sets array a from 0 to length with the     *
  * total number of each chracter in file.      *
  * FreqCount returns true if the file is open. *
  * FreqCount returns false if the file is      *
@@ -218,11 +218,11 @@ void fillArray(Tree head, const char* Code[], const char* prefix) {
         Code[head->ch] = prefix;
     }
     else if (head->kind == NodeKind(1)) {
-        char* left = new char[strlen(prefix)+1];
+        char* left = new char[strlen(prefix)+2];
         left = strcpy(left,prefix);
         left = strcat(left, "0");
         fillArray(head->left, Code, left);        
-        char* right = new char[strlen(prefix)+1];
+        char* right = new char[strlen(prefix)+2];
         right = strcpy(right,prefix);
         right = strcat(right,"1");
         fillArray(head->right, Code, right);
