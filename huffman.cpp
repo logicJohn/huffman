@@ -297,5 +297,6 @@ void writeCompressed(const char* readFile ,BFILE* binaryFile, const char* Code[]
         writeCodeBinary(binaryFile, Code[temp]);
         temp = getc(read);
     }
+    fclose(read);
 }
 
